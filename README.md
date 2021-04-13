@@ -1,7 +1,7 @@
 # bad-console
 Bad Apple for the developer tools console. Tested on Chrome, Edge and Firefox, using Windows.
 
-Go to https://jhancock532.github.io/bad-console/, and wait for the video data to load. 
+Go to https://jhancock532.github.io/bad-console/, and wait for the video data to load, or [watch a demo on YouTube](https://www.youtube.com/watch?v=sSwQwBgR8pY).
 
 Note that this site costs 43MB of data, 21MB of SVG frames and 22MB of mp4 video. A WebM would be nicer.
 

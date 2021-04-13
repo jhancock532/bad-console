@@ -19,14 +19,10 @@
     <meta property="twitter:description" content="Bad Apple, as played in the console window. 40MB of data required to load. Press F12 then click on the Console tab.">
     <meta property="twitter:image" content="socialmedia.jpg">
 
-    <!--Apologies for messy code, will tidy up later.-->
-    <!--Check out the README for more information: https://github.com/jhancock532/bad-console-->
-
-    <link id="favicon" rel="icon"
-    href="favicon.png"
-    type="image/png" 
-    sizes="32x32">
+    <link id="favicon" rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+    
     <script type="text/javascript" src="frames.js"></script> <!--About 21MB!-->
+    
     <style>
       .controls {
         text-align: center;
@@ -46,22 +42,25 @@
       }
     </style>
   </head>
+  
   <body onload="loadVideo();">
+    
     <div style="text-align: center; width: 100%;" id="loadingVideoMessage">Loading video...</div>
     <div style="text-align: center; width: 100%;" id="firefoxWarningMessage">Caution! The console contains flashing images on Firefox.</div>
     <div class="controls">
       <button id="beginPlayingButton" onclick="playBadApple(30)" disabled="true">Begin Playing</button>
       <button onclick="stopPlaying()">Stop Playing</button>
     </div>
+    
     <video width="600" height="409" id="videoPlayer">
-      <!--<source src="BadApple.mp4" type="video/mp4"> <!--About 22MB!-->
-      <!-- I'm preloading the video with the hope that it helps it start at the right time,
-           Sadly this doesn't seem to make a difference on Firefox -->
-     </video>
-     <div style="text-align: center; line-height: 0.5;">
-       <p><a href="https://github.com/jhancock532/bad-console">GitHub Repo</a> | <a href="https://twitter.com/jhancock532">Twitter</a></p>
-        <p>Stuck? Press F12 then click on the 'Console' tab.</p>
-     </div>
+      <!-- <source src="BadApple.mp4" type="video/mp4"> This video file is about 22MB! Todo, use webm instead. -->
+      <!-- I'm preloading the video with JavaScript to prevent awkward buffering. -->
+    </video>
+    
+    <div style="text-align: center; line-height: 0.5;">
+      <p><a href="https://github.com/jhancock532/bad-console">GitHub Repo</a> | <a href="https://twitter.com/jhancock532">Twitter</a></p>
+      <p>Stuck? Press F12 then click on the 'Console' tab.</p>
+    </div>
     
     <script>
       const favicon = document.getElementById("favicon");
@@ -70,33 +69,27 @@
       let startDelay = 0;
 
       if (navigator.userAgent.indexOf("Firefox") > 0){
-        startDelay = 1.04; //magic number??? //Sadly Firefox isn't as good as Chrome 
+        startDelay = 1.04; //Firefox has an awkward amount of lag when playing video.
         document.getElementById("firefoxWarningMessage").style.display = "block";
       }
 
       const SIZE = 320;
       const videoPlayer = document.getElementById('videoPlayer');
 
-      var stop = false;
-      var frameCount = 0;
-      var fps, fpsInterval, startTime, now, then, elapsed;
-
-      let currentFrame = 1;
-      let frames = [];
+      let stop = false, currentVideoFrame = 1, frames = [];
+      let fps, fpsInterval, startTime, now, then, elapsed;
 
       function loadVideo(){
-        var req = new XMLHttpRequest();
+        let req = new XMLHttpRequest();
         req.open('GET', 'BadApple.mp4', true);
         req.responseType = 'blob';
 
         req.onload = function() {
-          // Onload is triggered even on 404
-          // so we need to check the status code
+          // Onload is triggered even on 404 so we need to check the status code
           if (this.status === 200) {
-              var videoBlob = this.response;
-              var vid = URL.createObjectURL(videoBlob); // IE10+
-              // Video is now downloaded
-              // and we can set it as source on the video element
+              let videoBlob = this.response;
+              let vid = URL.createObjectURL(videoBlob);
+              // Video is now downloaded and we can set it as source on the video element
               videoPlayer.src = vid;
               videoPlayer.currentTime = startDelay;
               document.getElementById("loadingVideoMessage").innerHTML = "";
@@ -104,15 +97,15 @@
           }
         }
         req.onerror = function() {
-          // Error
+          alert("Error with loading video: please refresh the page.");
         }
 
         req.send();
       }
 
-      //Adapted from consoleimg.js by DefacedDev
-
+      
       function drawImageToConsole(encodedImageData){
+        //Adapted from consoleimg.js by @defaced - https://defaced.dev/tools/consoleimg/
         const o = 'background: url(' + encodedImageData + ') left top no-repeat; font-size: ' + SIZE + 'px; background-size: contain; background-color: transparent;';
         console.log('%c     ', o);
       }
@@ -131,7 +124,7 @@
         stop = true;
         videoPlayer.currentTime = startDelay;
         videoPlayer.pause();
-        currentFrame = 1;
+        currentVideoFrame = 1;
       }
 
       function animate() {
@@ -143,8 +136,8 @@
 
         if (elapsed > fpsInterval) {
             then = now - (elapsed % fpsInterval);
-            drawImageToConsole(loadedFrames[currentFrame]);
-            favicon.setAttribute("href", loadedFrames[currentFrame]); 
+            drawImageToConsole(loadedFrames[currentVideoFrame]);
+            favicon.setAttribute("href", loadedFrames[currentVideoFrame]); 
             currentFrame++;
 
             if (currentFrame > 6567){
@@ -177,7 +170,8 @@ a8"     "" a8"     "8a a8"    `Y88 a8P_____88
 
 
     Abandon all hope, ye who enter here!
-
+      A wasteland of code snippets from my journeys
+        Left for aesthetic consideration, ideally not practical use!
 
 
     <button onclick="loadImageData()">Load Image Data</button>

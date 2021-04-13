@@ -15,3 +15,5 @@ then the SVG was converted to Base64 encoded image with JavaScript btoa().
 
 The drawing to the console function is adapted from defaced.dev's code, 
 https://defaced.dev/tools/consoleimg/
+
+Shoutout to [the original Bad Apple Browser Console repository](https://github.com/g-otn/bad-apple-browser-console), that logged Bad Apple using braille characters.

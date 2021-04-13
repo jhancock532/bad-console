@@ -2,6 +2,26 @@
 <html>
   <head>
     <title>Bad Console</title>
+    <meta name="title" content="Bad Console">
+    <meta name="description" content="Bad Apple, as played in the console window. 40MB of data required to load. Press F12 then click on the Console tab.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jhancock532.github.io/bad-console/">
+    <meta property="og:title" content="Bad Console">
+    <meta property="og:description" content="Bad Apple, as played in the console window. 40MB of data required to load. Press F12 then click on the Console tab.">
+    <meta property="og:image" content="socialmedia.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://jhancock532.github.io/bad-console/">
+    <meta property="twitter:title" content="Bad Console">
+    <meta property="twitter:description" content="Bad Apple, as played in the console window. 40MB of data required to load. Press F12 then click on the Console tab.">
+    <meta property="twitter:image" content="socialmedia.jpg">
+
+    <!--Apologies for messy code, will tidy up later.-->
+    <!--Check out the README for more information: https://github.com/jhancock532/bad-console-->
+
     <link id="favicon" rel="icon"
     href="favicon.png"
     type="image/png" 
@@ -17,7 +37,8 @@
       #videoPlayer {
         text-align: center;
         width: 100%;
-        margin-top: 10px;
+        margin-top: 2px;
+        margin-bottom: 5px;
       }
 
       #firefoxWarningMessage {
@@ -37,6 +58,10 @@
       <!-- I'm preloading the video with the hope that it helps it start at the right time,
            Sadly this doesn't seem to make a difference on Firefox -->
      </video>
+     <div style="text-align: center; line-height: 0.5;">
+       <p><a href="https://github.com/jhancock532/bad-console">GitHub Repo</a> | <a href="https://twitter.com/jhancock532">Twitter</a></p>
+        <p>Stuck? Press F12 then click on the 'Console' tab.</p>
+     </div>
     
     <script>
       const favicon = document.getElementById("favicon");

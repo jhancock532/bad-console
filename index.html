@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bad Console</title>
+    <link id="favicon" rel="icon"
+    href="favicon.png"
+    type="image/png" 
+    sizes="32x32">
+    <script type="text/javascript" src="frames.js"></script> <!--About 21MB!-->
+    <style>
+      .controls {
+        text-align: center;
+        width: 100%;
+        padding: 20px 0;
+      }
+
+      #videoPlayer {
+        text-align: center;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      #firefoxWarningMessage {
+        display: none;
+      }
+    </style>
+  </head>
+  <body onload="loadVideo();">
+    <div style="text-align: center; width: 100%;" id="loadingVideoMessage">Loading video...</div>
+    <div style="text-align: center; width: 100%;" id="firefoxWarningMessage">Caution! The console contains flashing images on Firefox.</div>
+    <div class="controls">
+      <button id="beginPlayingButton" onclick="playBadApple(30)" disabled="true">Begin Playing</button>
+      <button onclick="stopPlaying()">Stop Playing</button>
+    </div>
+    <video width="600" height="409" id="videoPlayer">
+      <!--<source src="BadApple.mp4" type="video/mp4"> <!--About 22MB!-->
+      <!-- I'm preloading the video with the hope that it helps it start at the right time,
+           Sadly this doesn't seem to make a difference on Firefox -->
+     </video>
+    
+    <script>
+      const favicon = document.getElementById("favicon");
+      document.getElementById("beginPlayingButton").disabled = true; 
+
+      let startDelay = 0;
+
+      if (navigator.userAgent.indexOf("Firefox") > 0){
+        startDelay = 1.04; //magic number??? //Sadly Firefox isn't as good as Chrome 
+        document.getElementById("firefoxWarningMessage").style.display = "block";
+      }
+
+      const SIZE = 320;
+      const videoPlayer = document.getElementById('videoPlayer');
+
+      var stop = false;
+      var frameCount = 0;
+      var fps, fpsInterval, startTime, now, then, elapsed;
+
+      let currentFrame = 1;
+      let frames = [];
+
+      function loadVideo(){
+        var req = new XMLHttpRequest();
+        req.open('GET', 'BadApple.mp4', true);
+        req.responseType = 'blob';
+
+        req.onload = function() {
+          // Onload is triggered even on 404
+          // so we need to check the status code
+          if (this.status === 200) {
+              var videoBlob = this.response;
+              var vid = URL.createObjectURL(videoBlob); // IE10+
+              // Video is now downloaded
+              // and we can set it as source on the video element
+              videoPlayer.src = vid;
+              videoPlayer.currentTime = startDelay;
+              document.getElementById("loadingVideoMessage").innerHTML = "";
+              document.getElementById("beginPlayingButton").disabled = false; 
+          }
+        }
+        req.onerror = function() {
+          // Error
+        }
+
+        req.send();
+      }
+
+      //Adapted from consoleimg.js by DefacedDev
+
+      function drawImageToConsole(encodedImageData){
+        const o = 'background: url(' + encodedImageData + ') left top no-repeat; font-size: ' + SIZE + 'px; background-size: contain; background-color: transparent;';
+        console.log('%c     ', o);
+      }
+
+      function playBadApple(fps) {
+          fpsInterval = 1000 / fps;
+          then = Date.now();
+          startTime = then;
+          stop = false;
+          
+          videoPlayer.play()
+          animate();
+      }
+
+      function stopPlaying(){
+        stop = true;
+        videoPlayer.currentTime = startDelay;
+        videoPlayer.pause();
+        currentFrame = 1;
+      }
+
+      function animate() {
+        if (stop == false)
+          requestAnimationFrame(animate);
+
+        now = Date.now();
+        elapsed = now - then;
+
+        if (elapsed > fpsInterval) {
+            then = now - (elapsed % fpsInterval);
+            drawImageToConsole(loadedFrames[currentFrame]);
+            favicon.setAttribute("href", loadedFrames[currentFrame]); 
+            currentFrame++;
+
+            if (currentFrame > 6567){
+              stopPlaying();
+            }
+        }
+      }
+    </script>
+  </body>
+
+  <!--
+
+                                88             
+                                88             
+                                88             
+ ,adPPYba,  ,adPPYba,   ,adPPYb,88  ,adPPYba,  
+a8"     "" a8"     "8a a8"    `Y88 a8P_____88  
+8b         8b       d8 8b       88 8PP"""""""  
+"8a,   ,aa "8a,   ,a8" "8a,   ,d88 "8b,   ,aa  
+ `"Ybbd8"'  `"YbbdP"'   `"8bbdP"Y8  `"Ybbd8"'  
+
+                                               _ 
+                                              | |
+  __ _ _ __ __ ___   _____ _   _  __ _ _ __ __| |
+ / _` | '__/ _` \ \ / / _ \ | | |/ _` | '__/ _` |
+| (_| | | | (_| |\ V /  __/ |_| | (_| | | | (_| |
+ \__, |_|  \__,_| \_/ \___|\__, |\__,_|_|  \__,_|
+  __/ |                     __/ |                
+ |___/                     |___/   
+
+
+    Abandon all hope, ye who enter here!
+
+
+
+    <button onclick="loadImageData()">Load Image Data</button>
+    <button id="btnSave">Save JSON file</button>
+        <button onclick="testImageDataLoading()">Test Image Data</button>
+
+            <div class="demo"></div>
+
+    /*
+data:image/svg+xml;utf8,<?xml version=\"1.0\" standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"\n width=\"480.000000pt\" height=\"360.000000pt\" viewBox=\"0 0 480.000000 360.000000\"\n preserveAspectRatio=\"xMidYMid meet\">\n<metadata>\nCreated by potrace 1.16, written by Peter Selinger 2001-2019\n</metadata>\n<g transform=\"translate(0.000000,360.000000) scale(0.100000,-0.100000)\"\nfill=\"#000000\" stroke=\"none\">\n<path d=\"M0 1800 l0 -1800 2400 0 2400 0 0 1800 0 1800 -2400 0 -2400 0 0\n-1800z\"/>\n</g>\n Code injected by live-server \n</svg>\n
+
+//https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream
+
+/*
+function testImageDataLoading(){
+
+  let url = getFileName(72);
+    fetch(url)
+    .then(x => x.text())
+    .then(function(res){
+      console.log('data:image/svg+xml;base64,' + btoa(res.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "").replace(/<metadata\b[^<]*(?:(?!<\/metadata>)<[^<]*)*<\/metadata>/gi, "").replace(/(?:^|\W)< Code injected by live-server >(?:$|\W)/g,"").replace(/\n|\r/g, " ").substring(151)));
+    })
+  
+}
+*/
+
+/*
+async function loadImageData(){
+  let requestList = [];
+
+  for (let i = 1; i < 6569; i++){
+    if (i % 100 == 0){
+      console.log(i)
+    }
+    
+    let url = getFileName(i);
+    //requestList.push(
+    await fetch(url).then(x => x.text()).then(function(res){
+        //Get rid of live server script addons! //get rid of first 156 chars!
+        //frames[i] = 'data:image/svg+xml;utf8,' + encodeURIComponent(res.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "").replace(/\n|\r/g, "").replace(/\\"/g, '"').substring(148));
+        //encodeURIComponent
+        frames[i] = 'data:image/svg+xml;base64,' + btoa(res.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "").replace(/<metadata\b[^<]*(?:(?!<\/metadata>)<[^<]*)*<\/metadata>/gi, "").replace(/(?:^|\W)<!Code injected by live-server >(?:$|\W)/g,"").replace(/\n|\r/g, " ").substring(151));
+      })
+    //);
+  }
+
+  
+  Promise
+    .all(requestList) // (4)
+    .then(function() {
+      alert('All requests finished!'); // (5)
+    });
+    
+}*/
+
+/*
+const downloadToFile = (content, filename, contentType) => {
+  const a = document.createElement('a');
+  const file = new Blob([content], {type: contentType});
+  
+  a.href= URL.createObjectURL(file);
+  a.download = filename;
+  a.click();
+
+  URL.revokeObjectURL(a.href);
+};
+
+document.querySelector('#btnSave').addEventListener('click', () => {
+  
+  downloadToFile(JSON.stringify(frames), 'output.json', 'text/plain');
+});*/
+
+      /*
+      function getFileName(i){
+        let filename = "svgs/out-";
+        if (i < 1000) {
+          filename += "0";
+        }
+        if (i < 100) {
+          filename += "0";
+        }
+        if (i < 10){
+          filename += "0";
+        }
+        filename += i.toString();
+        filename += ".svg"
+
+        return filename;
+      }
+      */
+
+      <style>
+      .demo {
+        width: 900px; 
+        height: 600px; 
+        /*background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><linearGradient id='gradient'><stop offset='10%' stop-color='%23F00'/><stop offset='90%' stop-color='%23fcc'/> </linearGradient><rect fill='url(%23gradient)' x='0' y='0' width='100%' height='100%'/></svg>");*/
+        /*background-image: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.0%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%20width%3D%22480.000000pt%22%20height%3D%22360.000000pt%22%20viewBox%3D%220%200%20480.000000%20360.000000%22%20%20preserveAspectRatio%3D%22xMidYMid%20meet%22%3E%20%3Cg%20transform%3D%22translate%280.000000%2C360.000000%29%20scale%280.100000%2C-0.100000%29%22%20fill%3D%22%23000000%22%20stroke%3D%22none%22%3E%20%3Cpath%20d%3D%22M1667%203578%20c11%20-13%2024%20-33%2027%20-44%2022%20-71%2092%20-92%20173%20-53%2024%2012%2047%2018%2051%2014%204%20-3%2010%20-45%2013%20-93%204%20-48%2014%20-107%2023%20-132%2014%20-41%2014%20-52%201%20-100%20-24%20-88%20-20%20-153%2011%20-189%2026%20-32%2084%20-54%20111%20-44%2014%206%2015%20-2%2010%20-63%20-4%20-38%20-7%20-81%20-7%20-95%200%20-19%20-8%20-29%20-32%20-40%20-31%20-13%20-32%20-16%20-30%20-61%202%20-26%20-1%20-80%20-7%20-120%20-5%20-40%20-13%20-109%20-16%20-153%20-4%20-44%20-11%20-109%20-16%20-145%20-21%20-138%20-22%20-150%20-10%20-150%207%200%209%205%205%2011%20-3%206%205%204%2018%20-5%2024%20-16%2026%20-23%2031%20-129%20l5%20-112%20-45%20-67%20c-55%20-84%20-75%20-143%20-97%20-283%20-27%20-173%20-27%20-172%20-93%20-180%20-80%20-10%20-153%20-45%20-194%20-93%20-44%20-51%20-56%20-89%20-54%20-168%203%20-73%2018%20-124%2056%20-185%20l29%20-46%20-45%20-119%20c-25%20-66%20-63%20-157%20-85%20-204%20-21%20-47%20-49%20-112%20-63%20-145%20-14%20-33%20-44%20-100%20-67%20-150%20-73%20-155%20-100%20-217%20-100%20-226%200%20-5%20488%20-9%201199%20-9%20l1198%200%2013%2077%20c19%20113%2019%20114%2024%20165%202%2026%2010%2055%2016%2065%209%2014%2010%208%205%20-32%20-3%20-27%20-2%20-101%201%20-163%20l7%20-112%20379%200%20378%200%20-4%2022%20c-3%2013%20-10%2066%20-16%20118%20-15%20132%20-18%20160%20-36%20285%20-9%2061%20-13%20123%20-10%20139%204%2019%2036%2060%2085%20111%2086%2088%20100%20117%2082%20175%20-22%2074%20-99%20121%20-243%20150%20-32%206%20-59%2016%20-59%2021%20-1%205%20-2%2012%20-3%2017%20-11%2044%20-19%20198%20-20%20382%20-1%20215%20-2%20227%20-24%20270%20-13%2025%20-38%2060%20-55%2078%20-42%2043%20-179%20134%20-247%20163%20-30%2012%20-58%2027%20-62%2033%20-3%205%204%2028%2016%2050%2031%2056%2048%20110%2040%20129%20-3%209%20-22%2019%20-42%2023%20-58%2011%20-69%2039%20-22%2055%2033%2012%2037%2030%2015%2069%20-11%2019%20-14%2069%20-15%20215%20l0%20191%2033%2079%20c30%2073%2071%20199%2096%20300%2014%2056%2069%20128%2092%20122%2013%20-4%2025%2010%2049%2055%2027%2049%2031%2067%2025%2097%20-3%2020%20-6%2084%20-5%20144%20l1%20107%20-1257%200%20-1257%200%2020%20-22z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");*/
+        /*background-image: url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKIHdpZHRoPSI0ODAuMDAwMDAwcHQiIGhlaWdodD0iMzYwLjAwMDAwMHB0IiB2aWV3Qm94PSIwIDAgNDgwLjAwMDAwMCAzNjAuMDAwMDAwIgogcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgbWVldCI+CjxtZXRhZGF0YT4KQ3JlYXRlZCBieSBwb3RyYWNlIDEuMTYsIHdyaXR0ZW4gYnkgUGV0ZXIgU2VsaW5nZXIgMjAwMS0yMDE5CjwvbWV0YWRhdGE+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLDM2MC4wMDAwMDApIHNjYWxlKDAuMTAwMDAwLC0wLjEwMDAwMCkiCmZpbGw9IiMwMDAwMDAiIHN0cm9rZT0ibm9uZSI+CjxwYXRoIGQ9Ik0xNjY3IDM1NzggYzExIC0xMyAyNCAtMzMgMjcgLTQ0IDIyIC03MSA5MiAtOTIgMTczIC01MyAyNCAxMiA0NyAxOAo1MSAxNCA0IC0zIDEwIC00NSAxMyAtOTMgNCAtNDggMTQgLTEwNyAyMyAtMTMyIDE0IC00MSAxNCAtNTIgMSAtMTAwIC0yNCAtODgKLTIwIC0xNTMgMTEgLTE4OSAyNiAtMzIgODQgLTU0IDExMSAtNDQgMTQgNiAxNSAtMiAxMCAtNjMgLTQgLTM4IC03IC04MSAtNwotOTUgMCAtMTkgLTggLTI5IC0zMiAtNDAgLTMxIC0xMyAtMzIgLTE2IC0zMCAtNjEgMiAtMjYgLTEgLTgwIC03IC0xMjAgLTUKLTQwIC0xMyAtMTA5IC0xNiAtMTUzIC00IC00NCAtMTEgLTEwOSAtMTYgLTE0NSAtMjEgLTEzOCAtMjIgLTE1MCAtMTAgLTE1MCA3CjAgOSA1IDUgMTEgLTMgNiA1IDQgMTggLTUgMjQgLTE2IDI2IC0yMyAzMSAtMTI5IGw1IC0xMTIgLTQ1IC02NyBjLTU1IC04NAotNzUgLTE0MyAtOTcgLTI4MyAtMjcgLTE3MyAtMjcgLTE3MiAtOTMgLTE4MCAtODAgLTEwIC0xNTMgLTQ1IC0xOTQgLTkzIC00NAotNTEgLTU2IC04OSAtNTQgLTE2OCAzIC03MyAxOCAtMTI0IDU2IC0xODUgbDI5IC00NiAtNDUgLTExOSBjLTI1IC02NiAtNjMKLTE1NyAtODUgLTIwNCAtMjEgLTQ3IC00OSAtMTEyIC02MyAtMTQ1IC0xNCAtMzMgLTQ0IC0xMDAgLTY3IC0xNTAgLTczIC0xNTUKLTEwMCAtMjE3IC0xMDAgLTIyNiAwIC01IDQ4OCAtOSAxMTk5IC05IGwxMTk4IDAgMTMgNzcgYzE5IDExMyAxOSAxMTQgMjQgMTY1CjIgMjYgMTAgNTUgMTYgNjUgOSAxNCAxMCA4IDUgLTMyIC0zIC0yNyAtMiAtMTAxIDEgLTE2MyBsNyAtMTEyIDM3OSAwIDM3OCAwCi00IDIyIGMtMyAxMyAtMTAgNjYgLTE2IDExOCAtMTUgMTMyIC0xOCAxNjAgLTM2IDI4NSAtOSA2MSAtMTMgMTIzIC0xMCAxMzkgNAoxOSAzNiA2MCA4NSAxMTEgODYgODggMTAwIDExNyA4MiAxNzUgLTIyIDc0IC05OSAxMjEgLTI0MyAxNTAgLTMyIDYgLTU5IDE2Ci01OSAyMSAtMSA1IC0yIDEyIC0zIDE3IC0xMSA0NCAtMTkgMTk4IC0yMCAzODIgLTEgMjE1IC0yIDIyNyAtMjQgMjcwIC0xMyAyNQotMzggNjAgLTU1IDc4IC00MiA0MyAtMTc5IDEzNCAtMjQ3IDE2MyAtMzAgMTIgLTU4IDI3IC02MiAzMyAtMyA1IDQgMjggMTYgNTAKMzEgNTYgNDggMTEwIDQwIDEyOSAtMyA5IC0yMiAxOSAtNDIgMjMgLTU4IDExIC02OSAzOSAtMjIgNTUgMzMgMTIgMzcgMzAgMTUKNjkgLTExIDE5IC0xNCA2OSAtMTUgMjE1IGwwIDE5MSAzMyA3OSBjMzAgNzMgNzEgMTk5IDk2IDMwMCAxNCA1NiA2OSAxMjggOTIKMTIyIDEzIC00IDI1IDEwIDQ5IDU1IDI3IDQ5IDMxIDY3IDI1IDk3IC0zIDIwIC02IDg0IC01IDE0NCBsMSAxMDcgLTEyNTcgMAotMTI1NyAwIDIwIC0yMnoiLz4KPC9nPgo8L3N2Zz4=");*/
+        /*background-image: url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjQ4MC4wMDAwMDBwdCIgaGVpZ2h0PSIzNjAuMDAwMDAwcHQiIHZpZXdCb3g9IjAgMCA0ODAuMDAwMDAwIDM2MC4wMDAwMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLDM2MC4wMDAwMDApIHNjYWxlKDAuMTAwMDAwLC0wLjEwMDAwMCkiZmlsbD0iIzAwMDAwMCIgc3Ryb2tlPSJub25lIj48cGF0aCBkPSJNMTYyMCAzNTkwIGMwIC0xNSA1MSAtMTE0IDYxIC0xMTggNCAtMiAxOSAtMjAgMzEgLTQwIDIyIC0zNSAyMyAtNDYyMSAtMTkxIC0yIC04NSAtNSAtMTYzIC05IC0xNzMgLTQgLTEzIC0xNCAtMTcgLTM3IC0xNSAtMzAgMiAtMzIgMCAtMzAgLTI4IDAtMTYgLTMgLTc3IC04IC0xMzUgLTUgLTU4IC0xNiAtMTkyIC0yNCAtMjk4IC0xMSAtMTM1IC0yMCAtMjAxIC0zMSAtMjE3IC0xNC0yMiAtMTQgLTI0IDggLTMxIDEzIC00IDM1IC03IDQ5IC01IGwyNiAyIDYgLTExOCBjMyAtNjUgMTMgLTE2MyAyMiAtMjE3IDEzLTg4IDEzIC0xMDIgMCAtMTIyIC0zMyAtNTEgLTY0IC0xNzUgLTg1IC0zMzYgLTI4IC0yMjEgLTMyIC0yMzAgLTExMiAtMjUzLTEyNSAtMzUgLTIwOSAtOTcgLTI0NCAtMTgwIC0zMiAtNzcgLTE1IC0yMTMgMzUgLTI4NCAzMCAtNDEgMjQgLTExOCAtMTItMTYwIC0xNSAtMTggLTI5IC00NSAtMzMgLTU5IC0zIC0xNSAtMTIgLTQxIC0yMCAtNTggLTkgLTE3IC0xNCAtNDMgLTEyIC01NzIgLTE2IC02IC0zNCAtMjEgLTUxIC0xNiAtMTcgLTI0IC0zNiAtMjMgLTU4IDEgLTIwIC05IC00NyAtMjUgLTcwIC0xNCAtMjEtMjMgLTQ0IC0xOSAtNTMgMyAtOCAtNiAtMzEgLTE5IC01MSAtMTQgLTIwIC0yNSAtNDkgLTI1IC02NSAwIC0xNSAtNSAtMzEtMTEgLTM0IC0xMiAtOCAtMjMgLTM2IC0zNCAtODIgbC03IC0zMyAxNDA1IDAgMTQwNCAwIDYgODcgYzYgODggMzkgMzA0IDU4Mzc2IDEwIDM4IDExIDM4IDMwIDIxIDEwIC05IDIzIC0zMyAyOCAtNTMgOCAtMjggMzEgLTM0NiAzMSAtNDE4IDAgLTExIDc1LTEzIDQwMCAtMTMgbDQwMCAwIDAgMTk4IGMwIDE3MSAtMyAyMDUgLTIxIDI1NyAtMzQgMTAxIC0zNSAxNDIgLTUgMjE2IDI0IDYwMjYgNzcgMjYgMjEzIGwwIDE0NyAtMTM2IC0yIGMtNzQgLTEgLTEzOSAyIC0xNDMgNyAtMTAgMTIgLTU1IDE4MSAtODEgMzA5LTExIDU1IC0zMCAxNzYgLTQxIDI3MCAtMjIgMTg4IC0zMyAyNDIgLTYwIDI5NiAtMjQgNDkgLTkyIDExNyAtMTY4IDE2OCAtNjE0MiAtMjM4IDEzMSAtMjU4IDEzMSAtNiAwIC0xNSA2IC0yMSAxMyAtMTUgMTggNTMgMTM4IDczIDEzMSA4IC00IDEzIC05IDExLTEzIC0zIC00IDQgLTE4IDE1IC0zMSAxOSAtMjQgMTkgLTIzIC0xIDI4IC0xMSAyOSAtMjAgNjggLTIwIDg2IDAgMjEgLTYgMzYtMTYgNDAgLTggMyAtMjUgMjcgLTM2IDUzIC0yMSA0OCAtNjIgMjEyIC01NSAyMTkgMiAzIDIzIC0yMyA0NiAtNTYgMjMgLTMzNDQgLTYwIDQ3IC02MCAyIDAgLTYgMjEgLTE5IDQ4IC0yMyA0NSAtMjQgNTYgLTIyIDIzNyBsMiAxOTAgNTYgMTY1IGMzMCA5MTYwIDE5MiA2NiAyMjUgMTMgNzAgMjEgODEgNTAgNjYgMTUgLTkgMjYgLTkgNDIgLTEgMTEgNyAyOCA5IDM2IDYgMTQgLTYgNDIxOCA0MyAzNyAwIDQgLTU4MyA3IC0xMjk1IDcgLTg4NCAwIC0xMjk1IC0zIC0xMjk1IC0xMHogbTM2OSAtOTMyIGMyNSAtMjUyMjcgLTI4NCAyMCAtMzIzIC00IC0yMiAtNSAtNTYgLTMgLTc1IDUgLTI5IDEgLTM5IC0yMCAtNTcgLTE0IC0xMiAtMjggLTM0LTMyIC00OCAtNCAtMTUgLTI4IC00MSAtNjIgLTY1IC0zMSAtMjEgLTU3IC0zOCAtNTkgLTM2IC0xIDEgMiA1NCA4IDExNyA3IDcyMTYgMTE4IDI1IDEyNSA4IDYgMTEgMTQgNyAxOCAtNCAzIDggMyAyNyAwIDMyIC03IDMzIC03IDI1IDIyIC0xMSAzNyAtOSA2MjE1IDI2NCAxMSA5MSAyMCAxNjkgMjAgMTczIDAgNSA0IDYgOSAzIDUgLTMgMTQgLTU2IDIwIC0xMTh6IG0xODAxIC0xMzggbDIxLTMwIC0zMCAwIGMtMjggMCAtMzEgMyAtMzEgMzAgMCAxNyA0IDMwIDkgMzAgNSAwIDE5IC0xMyAzMSAtMzB6Ii8+PC9nPjwhLS0gQ29kZSBpbmplY3RlZCBieSBsaXZlLXNlcnZlciAtLT48L3N2Zz4=")*/
+        /*background-image: url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjQ4MC4wMDAwMDBwdCIgaGVpZ2h0PSIzNjAuMDAwMDAwcHQiIHZpZXdCb3g9IjAgMCA0ODAuMDAwMDAwIDM2MC4wMDAwMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiPiA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwzNjAuMDAwMDAwKSBzY2FsZSgwLjEwMDAwMCwtMC4xMDAwMDApIiBmaWxsPSIjMDAwMDAwIiBzdHJva2U9Im5vbmUiPiA8cGF0aCBkPSJNMTYyMCAzNTkwIGMwIC0xNSA1MSAtMTE0IDYxIC0xMTggNCAtMiAxOSAtMjAgMzEgLTQwIDIyIC0zNSAyMyAtNDYgMjEgLTE5MSAtMiAtODUgLTUgLTE2MyAtOSAtMTczIC00IC0xMyAtMTQgLTE3IC0zNyAtMTUgLTMwIDIgLTMyIDAgLTMwIC0yOCAwIC0xNiAtMyAtNzcgLTggLTEzNSAtNSAtNTggLTE2IC0xOTIgLTI0IC0yOTggLTExIC0xMzUgLTIwIC0yMDEgLTMxIC0yMTcgLTE0IC0yMiAtMTQgLTI0IDggLTMxIDEzIC00IDM1IC03IDQ5IC01IGwyNiAyIDYgLTExOCBjMyAtNjUgMTMgLTE2MyAyMiAtMjE3IDEzIC04OCAxMyAtMTAyIDAgLTEyMiAtMzMgLTUxIC02NCAtMTc1IC04NSAtMzM2IC0yOCAtMjIxIC0zMiAtMjMwIC0xMTIgLTI1MyAtMTI1IC0zNSAtMjA5IC05NyAtMjQ0IC0xODAgLTMyIC03NyAtMTUgLTIxMyAzNSAtMjg0IDMwIC00MSAyNCAtMTE4IC0xMiAtMTYwIC0xNSAtMTggLTI5IC00NSAtMzMgLTU5IC0zIC0xNSAtMTIgLTQxIC0yMCAtNTggLTkgLTE3IC0xNCAtNDMgLTEyIC01NyAyIC0xNiAtNiAtMzQgLTIxIC01MSAtMTYgLTE3IC0yNCAtMzYgLTIzIC01OCAxIC0yMCAtOSAtNDcgLTI1IC03MCAtMTQgLTIxIC0yMyAtNDQgLTE5IC01MyAzIC04IC02IC0zMSAtMTkgLTUxIC0xNCAtMjAgLTI1IC00OSAtMjUgLTY1IDAgLTE1IC01IC0zMSAtMTEgLTM0IC0xMiAtOCAtMjMgLTM2IC0zNCAtODIgbC03IC0zMyAxNDA1IDAgMTQwNCAwIDYgODcgYzYgODggMzkgMzA0IDU4IDM3NiAxMCAzOCAxMSAzOCAzMCAyMSAxMCAtOSAyMyAtMzMgMjggLTUzIDggLTI4IDMxIC0zNDYgMzEgLTQxOCAwIC0xMSA3NSAtMTMgNDAwIC0xMyBsNDAwIDAgMCAxOTggYzAgMTcxIC0zIDIwNSAtMjEgMjU3IC0zNCAxMDEgLTM1IDE0MiAtNSAyMTYgMjQgNjAgMjYgNzcgMjYgMjEzIGwwIDE0NyAtMTM2IC0yIGMtNzQgLTEgLTEzOSAyIC0xNDMgNyAtMTAgMTIgLTU1IDE4MSAtODEgMzA5IC0xMSA1NSAtMzAgMTc2IC00MSAyNzAgLTIyIDE4OCAtMzMgMjQyIC02MCAyOTYgLTI0IDQ5IC05MiAxMTcgLTE2OCAxNjggLTYxIDQyIC0yMzggMTMxIC0yNTggMTMxIC02IDAgLTE1IDYgLTIxIDEzIC0xNSAxOCA1MyAxMzggNzMgMTMxIDggLTQgMTMgLTkgMTEgLTEzIC0zIC00IDQgLTE4IDE1IC0zMSAxOSAtMjQgMTkgLTIzIC0xIDI4IC0xMSAyOSAtMjAgNjggLTIwIDg2IDAgMjEgLTYgMzYgLTE2IDQwIC04IDMgLTI1IDI3IC0zNiA1MyAtMjEgNDggLTYyIDIxMiAtNTUgMjE5IDIgMyAyMyAtMjMgNDYgLTU2IDIzIC0zMyA0NCAtNjAgNDcgLTYwIDIgMCAtNiAyMSAtMTkgNDggLTIzIDQ1IC0yNCA1NiAtMjIgMjM3IGwyIDE5MCA1NiAxNjUgYzMwIDkxIDYwIDE5MiA2NiAyMjUgMTMgNzAgMjEgODEgNTAgNjYgMTUgLTkgMjYgLTkgNDIgLTEgMTEgNyAyOCA5IDM2IDYgMTQgLTYgNDIgMTggNDMgMzcgMCA0IC01ODMgNyAtMTI5NSA3IC04ODQgMCAtMTI5NSAtMyAtMTI5NSAtMTB6IG0zNjkgLTkzMiBjMjUgLTI1MiAyNyAtMjg0IDIwIC0zMjMgLTQgLTIyIC01IC01NiAtMyAtNzUgNSAtMjkgMSAtMzkgLTIwIC01NyAtMTQgLTEyIC0yOCAtMzQgLTMyIC00OCAtNCAtMTUgLTI4IC00MSAtNjIgLTY1IC0zMSAtMjEgLTU3IC0zOCAtNTkgLTM2IC0xIDEgMiA1NCA4IDExNyA3IDcyIDE2IDExOCAyNSAxMjUgOCA2IDExIDE0IDcgMTggLTQgMyA4IDMgMjcgMCAzMiAtNyAzMyAtNyAyNSAyMiAtMTEgMzcgLTkgNjIgMTUgMjY0IDExIDkxIDIwIDE2OSAyMCAxNzMgMCA1IDQgNiA5IDMgNSAtMyAxNCAtNTYgMjAgLTExOHogbTE4MDEgLTEzOCBsMjEgLTMwIC0zMCAwIGMtMjggMCAtMzEgMyAtMzEgMzAgMCAxNyA0IDMwIDkgMzAgNSAwIDE5IC0xMyAzMSAtMzB6Ii8+IDwvZz4gPC9zdmc+");*/
+        /*background-image: url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgIHdpZHRoPSI0ODAuMDAwMDAwcHQiIGhlaWdodD0iMzYwLjAwMDAwMHB0IiB2aWV3Qm94PSIwIDAgNDgwLjAwMDAwMCAzNjAuMDAwMDAwIiAgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgbWVldCI+ICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwzNjAuMDAwMDAwKSBzY2FsZSgwLjEwMDAwMCwtMC4xMDAwMDApIiBmaWxsPSIjMDAwMDAwIiBzdHJva2U9Im5vbmUiPiA8cGF0aCBkPSJNMTYyMCAzNTkwIGMwIC0xNSA1MSAtMTE0IDYxIC0xMTggNCAtMiAxOSAtMjAgMzEgLTQwIDIyIC0zNSAyMyAtNDYgMjEgLTE5MSAtMiAtODUgLTUgLTE2MyAtOSAtMTczIC00IC0xMyAtMTQgLTE3IC0zNyAtMTUgLTMwIDIgLTMyIDAgLTMwIC0yOCAwIC0xNiAtMyAtNzcgLTggLTEzNSAtNSAtNTggLTE2IC0xOTIgLTI0IC0yOTggLTExIC0xMzUgLTIwIC0yMDEgLTMxIC0yMTcgLTE0IC0yMiAtMTQgLTI0IDggLTMxIDEzIC00IDM1IC03IDQ5IC01IGwyNiAyIDYgLTExOCBjMyAtNjUgMTMgLTE2MyAyMiAtMjE3IDEzIC04OCAxMyAtMTAyIDAgLTEyMiAtMzMgLTUxIC02NCAtMTc1IC04NSAtMzM2IC0yOCAtMjIxIC0zMiAtMjMwIC0xMTIgLTI1MyAtMTI1IC0zNSAtMjA5IC05NyAtMjQ0IC0xODAgLTMyIC03NyAtMTUgLTIxMyAzNSAtMjg0IDMwIC00MSAyNCAtMTE4IC0xMiAtMTYwIC0xNSAtMTggLTI5IC00NSAtMzMgLTU5IC0zIC0xNSAtMTIgLTQxIC0yMCAtNTggLTkgLTE3IC0xNCAtNDMgLTEyIC01NyAyIC0xNiAtNiAtMzQgLTIxIC01MSAtMTYgLTE3IC0yNCAtMzYgLTIzIC01OCAxIC0yMCAtOSAtNDcgLTI1IC03MCAtMTQgLTIxIC0yMyAtNDQgLTE5IC01MyAzIC04IC02IC0zMSAtMTkgLTUxIC0xNCAtMjAgLTI1IC00OSAtMjUgLTY1IDAgLTE1IC01IC0zMSAtMTEgLTM0IC0xMiAtOCAtMjMgLTM2IC0zNCAtODIgbC03IC0zMyAxNDA1IDAgMTQwNCAwIDYgODcgYzYgODggMzkgMzA0IDU4IDM3NiAxMCAzOCAxMSAzOCAzMCAyMSAxMCAtOSAyMyAtMzMgMjggLTUzIDggLTI4IDMxIC0zNDYgMzEgLTQxOCAwIC0xMSA3NSAtMTMgNDAwIC0xMyBsNDAwIDAgMCAxOTggYzAgMTcxIC0zIDIwNSAtMjEgMjU3IC0zNCAxMDEgLTM1IDE0MiAtNSAyMTYgMjQgNjAgMjYgNzcgMjYgMjEzIGwwIDE0NyAtMTM2IC0yIGMtNzQgLTEgLTEzOSAyIC0xNDMgNyAtMTAgMTIgLTU1IDE4MSAtODEgMzA5IC0xMSA1NSAtMzAgMTc2IC00MSAyNzAgLTIyIDE4OCAtMzMgMjQyIC02MCAyOTYgLTI0IDQ5IC05MiAxMTcgLTE2OCAxNjggLTYxIDQyIC0yMzggMTMxIC0yNTggMTMxIC02IDAgLTE1IDYgLTIxIDEzIC0xNSAxOCA1MyAxMzggNzMgMTMxIDggLTQgMTMgLTkgMTEgLTEzIC0zIC00IDQgLTE4IDE1IC0zMSAxOSAtMjQgMTkgLTIzIC0xIDI4IC0xMSAyOSAtMjAgNjggLTIwIDg2IDAgMjEgLTYgMzYgLTE2IDQwIC04IDMgLTI1IDI3IC0zNiA1MyAtMjEgNDggLTYyIDIxMiAtNTUgMjE5IDIgMyAyMyAtMjMgNDYgLTU2IDIzIC0zMyA0NCAtNjAgNDcgLTYwIDIgMCAtNiAyMSAtMTkgNDggLTIzIDQ1IC0yNCA1NiAtMjIgMjM3IGwyIDE5MCA1NiAxNjUgYzMwIDkxIDYwIDE5MiA2NiAyMjUgMTMgNzAgMjEgODEgNTAgNjYgMTUgLTkgMjYgLTkgNDIgLTEgMTEgNyAyOCA5IDM2IDYgMTQgLTYgNDIgMTggNDMgMzcgMCA0IC01ODMgNyAtMTI5NSA3IC04ODQgMCAtMTI5NSAtMyAtMTI5NSAtMTB6IG0zNjkgLTkzMiBjMjUgLTI1MiAyNyAtMjg0IDIwIC0zMjMgLTQgLTIyIC01IC01NiAtMyAtNzUgNSAtMjkgMSAtMzkgLTIwIC01NyAtMTQgLTEyIC0yOCAtMzQgLTMyIC00OCAtNCAtMTUgLTI4IC00MSAtNjIgLTY1IC0zMSAtMjEgLTU3IC0zOCAtNTkgLTM2IC0xIDEgMiA1NCA4IDExNyA3IDcyIDE2IDExOCAyNSAxMjUgOCA2IDExIDE0IDcgMTggLTQgMyA4IDMgMjcgMCAzMiAtNyAzMyAtNyAyNSAyMiAtMTEgMzcgLTkgNjIgMTUgMjY0IDExIDkxIDIwIDE2OSAyMCAxNzMgMCA1IDQgNiA5IDMgNSAtMyAxNCAtNTYgMjAgLTExOHogbTE4MDEgLTEzOCBsMjEgLTMwIC0zMCAwIGMtMjggMCAtMzEgMyAtMzEgMzAgMCAxNyA0IDMwIDkgMzAgNSAwIDE5IC0xMyAzMSAtMzB6Ii8+IDwvZz48L3N2Zz4g");*/
+      }
+    </style>
+  -->
+</html>

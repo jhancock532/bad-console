@@ -138,9 +138,9 @@
             then = now - (elapsed % fpsInterval);
             drawImageToConsole(loadedFrames[currentVideoFrame]);
             favicon.setAttribute("href", loadedFrames[currentVideoFrame]); 
-            currentFrame++;
+            currentVideoFrame++;
 
-            if (currentFrame > 6567){
+            if (currentVideoFrame > 6567){
               stopPlaying();
             }
         }
